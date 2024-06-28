@@ -1,0 +1,26 @@
+name: Update licenses
+
+on:
+    schedule:
+        - cron: "10 7 5,15 * *" # 7:10, 5th and 15th day of month
+    push:
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-python@v5
+              with:
+                python-version: "3.12"
+            - uses: snok/install-poetry@v1
+            - run: poetry install
+            - name: Update licenses
+              run: python3 update_licenses.py
+            - uses: stefanzweifel/git-auto-commit-action@v5
+              with:
+                commit_message: "chore: update data"
+                commit_user_name: itsnicecraft-actions
+                commit_user_email: 127137491+itsnicecraft-actions@users.noreply.github.com
+                commit_author: itsnicecraft-actions <127137491+itsnicecraft-actions@users.noreply.github.com>
